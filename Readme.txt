@@ -1,0 +1,1 @@
+Aplicação web para criação de carimbos em JPG

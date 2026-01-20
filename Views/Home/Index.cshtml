@@ -1,0 +1,46 @@
+﻿<form asp-controller="Carimbo"
+      asp-action="Gerar"
+      method="post">
+    <select name="Tipo">
+        <option>Convênio</option>
+        <option>Decreto</option>
+        <option>Resolução</option>
+        <option>Portaria</option>
+    </select>
+
+    <select name="Fonte">
+        <option>Municipal</option>
+        <option>Estadual</option>
+        <option>Federal</option>
+    </select>
+
+    <select name="Bloco">
+        <option>Atenção Primária à Saúde</option>
+        <option>Assistência Farmacêutica</option>
+        <option>Atenção Especializada à Saúde</option>
+    </select>
+
+    <input name="Numero" placeholder="Número" />
+    <input name="Nome" placeholder="Nome" />
+
+    <select name="Banco">
+        <option>Itaú</option>
+        <option>Santander</option>
+        <option>Banco do Brasil</option>
+    </select>
+
+    <select name="Agencia">
+        <option>3.209-3</option>
+        <option>4.486-8</option>
+        <option>3.154-5</option>
+    </select>
+
+    <select name="Conta">
+        <option>42.369-6</option>
+        <option>48.849-7</option>
+        <option>89.481-8</option>
+        <option>35.489-6</option>
+    </select>
+
+    <button type="submit">Gerar Carimbo</button>
+</form>
