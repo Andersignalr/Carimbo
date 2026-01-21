@@ -1,49 +1,138 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
+﻿using SixLabors.Fonts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 public class CarimboImageService
 {
-    public byte[] GerarImagem(CarimboModel m)
+    private readonly Font _fonte16;
+    private readonly Font _fonte14;
+    private readonly Font _fonte12;
+
+
+    private const int Padding = 10;
+    private const int ColunaTitulo = 160;
+    private const int LarguraImagem = 500;
+    private const int AlturaMinLinha = 16;
+
+    public CarimboImageService()
     {
-        int largura = 400;
-        int altura = 250;
+        var family = SystemFonts.Collection.TryGet("Arial", out var arial)
+            ? arial
+            : SystemFonts.Collection.Families.First();
 
-        using var bmp = new Bitmap(largura, altura);
-        using var g = Graphics.FromImage(bmp);
+        _fonte16 = family.CreateFont(14, FontStyle.Bold);
+        _fonte14 = family.CreateFont(12, FontStyle.Bold);
+        _fonte12 = family.CreateFont(10, FontStyle.Bold);
 
-        g.Clear(Color.White);
+    }
 
-        var fonteTitulo = new Font("Arial", 20, FontStyle.Bold);
-        var fonteTexto = new Font("Arial", 14);
-        var pincel = Brushes.Black;
+    public byte[] GerarCarimbo(CarimboModel dto)
+    {
+        using var image = new Image<Rgba32>(LarguraImagem, 1200);
+        image.Mutate(x => x.BackgroundColor(Color.White));
 
-        int y = 20;
+        float y = Padding;
 
-        g.DrawRectangle(Pens.Black, 10, 10, largura - 20, altura - 20);
+        y = Linha(image, y, "FONTE:", dto.Fonte);
+        y = Linha(image, y, "BLOCO:", dto.Bloco);
 
-        g.DrawString($"{m.Tipo} - {m.Fonte}", fonteTitulo, pincel, 20, y);
-        y += 40;
+        // 🔥 PULO DO GATO
+        y = Linha(image, y, ObterTituloNumero(dto.TipoAto), dto.Numero);
 
-        g.DrawString($"Bloco: {m.Bloco}", fonteTexto, pincel, 20, y);
-        y += 30;
+        y = Linha(image, y, "NOME:", dto.Nome);
+        y = Linha(image, y, "BANCO:", dto.Banco);
+        y = Linha(image, y, "AGÊNCIA:", dto.Agencia);
+        y = Linha(image, y, "Nº CONTA:", dto.Conta);
 
-        g.DrawString($"Número: {m.Numero}", fonteTexto, pincel, 20, y);
-        y += 30;
+        // Borda externa
+        image.Mutate(ctx =>
+            ctx.Draw(Color.Black, 2,
+                new Rectangle(
+                    0,
+                    0,
+                    LarguraImagem-1,
+                    (int)(y+4)
+                ))
+        );
 
-        g.DrawString($"Nome: {m.Nome}", fonteTexto, pincel, 20, y);
-        y += 30;
-
-        g.DrawString($"Banco: {m.Banco}", fonteTexto, pincel, 20, y);
-        y += 30;
-
-        g.DrawString($"Agência: {m.Agencia}", fonteTexto, pincel, 20, y);
-        y += 30;
-
-        g.DrawString($"Conta: {m.Conta}", fonteTexto, pincel, 20, y);
+        image.Mutate(ctx =>
+            ctx.Crop(new Rectangle(0, 0, LarguraImagem, (int)(y + Padding / 2)))
+        );
 
         using var ms = new MemoryStream();
-        bmp.Save(ms, ImageFormat.Jpeg);
-
+        image.SaveAsPng(ms);
         return ms.ToArray();
+    }
+
+    private float Linha(Image<Rgba32> image, float y, string titulo, string valor)
+    {
+        float xTitulo = Padding;
+        float xValor = Padding + ColunaTitulo;
+        float larguraValor = LarguraImagem - xValor - Padding;
+
+        // 1️⃣ Começa tentando com fonte 16
+        var fonteAtual = _fonte16;
+        var valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
+
+        var bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
+
+        // 2️⃣ Se passar de 1 linha → fonte 14
+        if (bounds.Height > AlturaMinLinha * 1.2f)
+        {
+            fonteAtual = _fonte14;
+            valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
+            bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
+        }
+
+        // 3️⃣ Se passar de 2 linhas → fonte 12
+        if (bounds.Height > AlturaMinLinha * 2.2f)
+        {
+            fonteAtual = _fonte12;
+            valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
+            bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
+        }
+
+        float alturaLinha = Math.Max(AlturaMinLinha, bounds.Height);
+
+        var tituloOptions = new RichTextOptions(_fonte16)
+        {
+            Origin = new PointF(xTitulo, y)
+        };
+
+        image.Mutate(ctx =>
+        {
+            ctx.DrawText(tituloOptions, titulo, Color.Black);
+            ctx.DrawText(valorOptions, valor.ToUpper(), Color.Black);
+        });
+
+        return y + alturaLinha + 2;
+    }
+
+    private RichTextOptions CriarValorOptions(
+    Font fonte,
+    float x,
+    float y,
+    float largura)
+    {
+        return new RichTextOptions(fonte)
+        {
+            Origin = new PointF(x, y),
+            WrappingLength = largura
+        };
+    }
+
+
+    private string ObterTituloNumero(TipoAto tipo)
+    {
+        return tipo switch
+        {
+            TipoAto.Resolucao => "Nº RESOLUÇÃO:",
+            TipoAto.Decreto => "Nº DECRETO:",
+            TipoAto.Portaria => "Nº PORTARIA:",
+            TipoAto.Convenio => "Nº CONVÊNIO:",
+            _ => "Nº:"
+        };
     }
 }
