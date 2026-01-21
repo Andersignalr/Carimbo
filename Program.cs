@@ -1,5 +1,10 @@
 // Define o Builder da aplicação
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 // Adiciona serviços ao container
 builder.Services.AddControllersWithViews();

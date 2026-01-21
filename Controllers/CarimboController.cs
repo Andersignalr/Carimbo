@@ -12,7 +12,7 @@ public class CarimboController : Controller
     [HttpPost]
     public IActionResult Gerar(CarimboModel model)
     {
-        var imagemBytes = _service.GerarImagem(model);
+        var imagemBytes = _service.GerarCarimbo(model);
 
         return File(imagemBytes, "image/jpeg", "carimbo.jpg");
     }
