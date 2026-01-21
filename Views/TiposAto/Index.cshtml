@@ -1,0 +1,23 @@
+﻿@model List<TipoAto>
+
+<h2>Tipos</h2>
+
+<a asp-action="Create">Novo Tipo</a>
+
+<table>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Nome</td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+            <form asp-action="Delete"
+                  asp-route-id="@item.Id"
+                  method="post"
+                  style="display:inline">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+}
+</table>

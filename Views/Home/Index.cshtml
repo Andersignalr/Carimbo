@@ -1,36 +1,30 @@
-﻿<form asp-controller="Carimbo"
+﻿@model CarimboCreateViewModel
+
+<form asp-controller="Carimbo"
       asp-action="Gerar"
       method="post">
 
-    <select name="TipoAto">
-        <option>Convenio</option>
-        <option>Decreto</option>
-        <option>Resolucao</option>
-        <option>Portaria</option>
+    <select asp-for="TipoAtoId"
+            asp-items="@(new SelectList(Model.TiposAto, "Id", "Nome"))">
     </select>
 
-    <select name="Fonte">
-        <option>Municipal</option>
-        <option>Estadual</option>
-        <option>Federal</option>
+    <select asp-for="FonteId"
+            asp-items="@(new SelectList(Model.Fontes, "Id", "Nome"))">
     </select>
 
-    <input name="Bloco" placeholder="Bloco" />
-
-    <input name="Numero" placeholder="Número" />
-    <input name="Nome" placeholder="Nome" />
-
-    <select name="Banco">
-        <option>Itaú</option>
-        <option>Bradesco</option>
-        <option>Santander</option>
-        <option>Banco do Brasil</option>
-        <option>Caixa Econômica Federal</option>
+    <select asp-for="BlocoId"
+            asp-items="@(new SelectList(Model.Blocos, "Id", "Nome"))">
     </select>
 
-    <input name="Agencia" placeholder="Agencia" />
+    <input asp-for="Numero" placeholder="Número" />
+    <input asp-for="Nome" placeholder="Nome" />
 
-    <input name="Conta" placeholder="Conta" />
+    <select asp-for="BancoId"
+            asp-items="@(new SelectList(Model.Bancos, "Id", "Nome"))">
+    </select>
+
+    <input asp-for="Agencia" placeholder="Agência" />
+    <input asp-for="Conta" placeholder="Conta" />
 
     <button type="submit">Gerar Carimbo</button>
 </form>

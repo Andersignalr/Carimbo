@@ -124,15 +124,17 @@ public class CarimboImageService
     }
 
 
-    private string ObterTituloNumero(TipoAto tipo)
+    private string ObterTituloNumero(string tipoAto)
     {
-        return tipo switch
+        return tipoAto?.ToUpper() switch
         {
-            TipoAto.Resolucao => "Nº RESOLUÇÃO:",
-            TipoAto.Decreto => "Nº DECRETO:",
-            TipoAto.Portaria => "Nº PORTARIA:",
-            TipoAto.Convenio => "Nº CONVÊNIO:",
+            "RESOLUÇÃO" or "RESOLUCAO" => "Nº RESOLUÇÃO:",
+            "DECRETO" => "Nº DECRETO:",
+            "PORTARIA" => "Nº PORTARIA:",
+            "CONVÊNIO" or "CONVENIO" => "Nº CONVÊNIO:",
             _ => "Nº:"
         };
     }
+
+
 }
