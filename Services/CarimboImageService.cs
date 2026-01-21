@@ -6,9 +6,9 @@ using SixLabors.ImageSharp.Processing;
 
 public class CarimboImageService
 {
-    private readonly Font _fonte16;
-    private readonly Font _fonte14;
-    private readonly Font _fonte12;
+    private readonly Font _fonteA;
+    private readonly Font _fonteB;
+    private readonly Font _fonteC;
 
 
     private const int Padding = 10;
@@ -22,9 +22,9 @@ public class CarimboImageService
             ? arial
             : SystemFonts.Collection.Families.First();
 
-        _fonte16 = family.CreateFont(14, FontStyle.Bold);
-        _fonte14 = family.CreateFont(12, FontStyle.Bold);
-        _fonte12 = family.CreateFont(10, FontStyle.Bold);
+        _fonteA = family.CreateFont(14, FontStyle.Bold);
+        _fonteB = family.CreateFont(12, FontStyle.Bold);
+        _fonteC = family.CreateFont(10, FontStyle.Bold);
 
     }
 
@@ -73,7 +73,7 @@ public class CarimboImageService
         float larguraValor = LarguraImagem - xValor - Padding;
 
         // 1️⃣ Começa tentando com fonte 16
-        var fonteAtual = _fonte16;
+        var fonteAtual = _fonteA;
         var valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
 
         var bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
@@ -81,7 +81,7 @@ public class CarimboImageService
         // 2️⃣ Se passar de 1 linha → fonte 14
         if (bounds.Height > AlturaMinLinha * 1.2f)
         {
-            fonteAtual = _fonte14;
+            fonteAtual = _fonteB;
             valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
             bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
         }
@@ -89,14 +89,14 @@ public class CarimboImageService
         // 3️⃣ Se passar de 2 linhas → fonte 12
         if (bounds.Height > AlturaMinLinha * 2.2f)
         {
-            fonteAtual = _fonte12;
+            fonteAtual = _fonteC;
             valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
             bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
         }
 
         float alturaLinha = Math.Max(AlturaMinLinha, bounds.Height);
 
-        var tituloOptions = new RichTextOptions(_fonte16)
+        var tituloOptions = new RichTextOptions(_fonteA)
         {
             Origin = new PointF(xTitulo, y)
         };
