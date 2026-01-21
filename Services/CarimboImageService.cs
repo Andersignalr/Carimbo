@@ -6,9 +6,15 @@ using SixLabors.ImageSharp.Processing;
 
 public class CarimboImageService
 {
+<<<<<<< HEAD
     private readonly Font _fonteA;
     private readonly Font _fonteB;
     private readonly Font _fonteC;
+=======
+    private readonly Font _fonte16;
+    private readonly Font _fonte14;
+    private readonly Font _fonte12;
+>>>>>>> 6e1d2b0c4fd5c336e9fd7ac95a33c478804419ed
 
 
     private const int Padding = 10;
@@ -22,9 +28,15 @@ public class CarimboImageService
             ? arial
             : SystemFonts.Collection.Families.First();
 
+<<<<<<< HEAD
         _fonteA = family.CreateFont(14, FontStyle.Bold);
         _fonteB = family.CreateFont(12, FontStyle.Bold);
         _fonteC = family.CreateFont(10, FontStyle.Bold);
+=======
+        _fonte16 = family.CreateFont(14, FontStyle.Bold);
+        _fonte14 = family.CreateFont(12, FontStyle.Bold);
+        _fonte12 = family.CreateFont(10, FontStyle.Bold);
+>>>>>>> 6e1d2b0c4fd5c336e9fd7ac95a33c478804419ed
 
     }
 
@@ -73,7 +85,11 @@ public class CarimboImageService
         float larguraValor = LarguraImagem - xValor - Padding;
 
         // 1️⃣ Começa tentando com fonte 16
+<<<<<<< HEAD
         var fonteAtual = _fonteA;
+=======
+        var fonteAtual = _fonte16;
+>>>>>>> 6e1d2b0c4fd5c336e9fd7ac95a33c478804419ed
         var valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
 
         var bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
@@ -81,7 +97,11 @@ public class CarimboImageService
         // 2️⃣ Se passar de 1 linha → fonte 14
         if (bounds.Height > AlturaMinLinha * 1.2f)
         {
+<<<<<<< HEAD
             fonteAtual = _fonteB;
+=======
+            fonteAtual = _fonte14;
+>>>>>>> 6e1d2b0c4fd5c336e9fd7ac95a33c478804419ed
             valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
             bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
         }
@@ -89,14 +109,22 @@ public class CarimboImageService
         // 3️⃣ Se passar de 2 linhas → fonte 12
         if (bounds.Height > AlturaMinLinha * 2.2f)
         {
+<<<<<<< HEAD
             fonteAtual = _fonteC;
+=======
+            fonteAtual = _fonte12;
+>>>>>>> 6e1d2b0c4fd5c336e9fd7ac95a33c478804419ed
             valorOptions = CriarValorOptions(fonteAtual, xValor, y, larguraValor);
             bounds = TextMeasurer.MeasureBounds(valor.ToUpper(), valorOptions);
         }
 
         float alturaLinha = Math.Max(AlturaMinLinha, bounds.Height);
 
+<<<<<<< HEAD
         var tituloOptions = new RichTextOptions(_fonteA)
+=======
+        var tituloOptions = new RichTextOptions(_fonte16)
+>>>>>>> 6e1d2b0c4fd5c336e9fd7ac95a33c478804419ed
         {
             Origin = new PointF(xTitulo, y)
         };
