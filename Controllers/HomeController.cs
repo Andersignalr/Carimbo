@@ -18,6 +18,7 @@ namespace Carimbo.Controllers
         {
             var model = new CarimboCreateViewModel
             {
+                Blocos = _context.Blocos.ToList(),
                 Fontes = _context.Fontes.ToList(),
                 TiposAto = _context.TiposAto.ToList(),
                 Bancos = _context.Bancos.ToList()

@@ -10,8 +10,8 @@
     public string Agencia { get; set; }
     public string Conta { get; set; }
 
-    public List<Bloco> Blocos { get; set; }
-    public List<Fonte> Fontes { get; set; }
-    public List<TipoAto> TiposAto { get; set; }
-    public List<Banco> Bancos { get; set; }
+    public List<Bloco> Blocos { get; set; } = new();
+    public List<Fonte> Fontes { get; set; } = new();
+    public List<TipoAto> TiposAto { get; set; } = new();
+    public List<Banco> Bancos { get; set; } = new();
 }

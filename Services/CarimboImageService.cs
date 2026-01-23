@@ -31,7 +31,7 @@ public class CarimboImageService
     public byte[] GerarCarimbo(CarimboModel dto)
     {
         using var image = new Image<Rgba32>(LarguraImagem, 1200);
-        image.Mutate(x => x.BackgroundColor(Color.White));
+        //image.Mutate(x => x.BackgroundColor(Color.White));
 
         float y = Padding;
 
@@ -48,7 +48,7 @@ public class CarimboImageService
 
         // Borda externa
         image.Mutate(ctx =>
-            ctx.Draw(Color.Black, 2,
+            ctx.Draw(Color.Blue, 2,
                 new Rectangle(
                     0,
                     0,
@@ -103,8 +103,8 @@ public class CarimboImageService
 
         image.Mutate(ctx =>
         {
-            ctx.DrawText(tituloOptions, titulo, Color.Black);
-            ctx.DrawText(valorOptions, valor.ToUpper(), Color.Black);
+            ctx.DrawText(tituloOptions, titulo, Color.Blue);
+            ctx.DrawText(valorOptions, valor.ToUpper(), Color.Blue);
         });
 
         return y + alturaLinha + 2;
