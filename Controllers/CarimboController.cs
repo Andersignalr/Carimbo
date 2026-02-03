@@ -44,21 +44,34 @@ public class CarimboController : Controller
             return BadRequest();
 
         // 🔒 REGRA DE NEGÓCIO
-        if (tipoAto.Nome == "Resolução" && fonte.Nome != "Estadual")
-        {
-            ModelState.AddModelError(
-                "",
-                "Resolução só pode ser da fonte Estadual."
-            );
-        }
+        //if (tipoAto.Nome == "Resolução" && fonte.Nome != "ESTADUAL")
+        //{
+        //    ModelState.AddModelError(
+        //        "",
+        //        "Resolução só pode ser da fonte Estadual."
+        //    );
+        //}
 
-        if (tipoAto.Nome == "Portaria" && fonte.Nome != "Federal")
-        {
-            ModelState.AddModelError(
-                "",
-                "Portaria só pode ser da fonte Federal."
-            );
-        }
+        //if (tipoAto.Nome == "Portaria" && fonte.Nome != "FEDERAL")
+        //{
+        //    ModelState.AddModelError(
+        //        "",
+        //        "Portaria só pode ser da fonte Federal."
+        //    );
+        //}
+        //if (vm.EhEmenda)
+        //{
+        //    if (string.IsNullOrWhiteSpace(vm.NumeroProposta))
+        //        ModelState.AddModelError(nameof(vm.NumeroProposta), "Informe o Nº da Proposta.");
+
+        //    if (string.IsNullOrWhiteSpace(vm.NumeroEmenda))
+        //        ModelState.AddModelError(nameof(vm.NumeroEmenda), "Informe o Nº da Emenda.");
+
+        //    if (string.IsNullOrWhiteSpace(vm.NomeParlamentar))
+        //        ModelState.AddModelError(nameof(vm.NomeParlamentar), "Informe o Parlamentar.");
+        //}
+
+
 
 
         if (!ModelState.IsValid)
@@ -68,7 +81,7 @@ public class CarimboController : Controller
             vm.TiposAto = _context.TiposAto.ToList();
             vm.Bancos = _context.Bancos.ToList();
 
-            return View("Criar", vm);
+            return View("~/Views/Home/Index.cshtml", vm);
         }
 
         // 🔎 Busca nomes reais no banco
@@ -90,8 +103,16 @@ public class CarimboController : Controller
             Nome = vm.Nome,
             Banco = banco.Nome,
             Agencia = vm.Agencia,
-            Conta = vm.Conta
+            Conta = vm.Conta,
+            EhEmenda = vm.EhEmenda,
+            NumeroProposta = vm.NumeroProposta,
+            NumeroEmenda = vm.NumeroEmenda,
+            NomeParlamentar = vm.NomeParlamentar,
+            Partido = vm.Partido,
+            TipoEmenda = vm.TipoEmenda,
         };
+        Console.WriteLine("-------------------------EhEmenda = " + vm.EhEmenda);
+
 
         var imagem = _imageService.GerarCarimbo(carimbo);
 

@@ -19,3 +19,18 @@ tipoSelect.addEventListener("change", () => {
         fonteSelect.value = primeiraVisivel.value;
     }
 });
+
+
+//// Emenda
+
+const chk = document.getElementById("chkEmenda");
+const campos = document.getElementById("camposEmenda");
+
+function toggleEmenda() {
+    campos.style.display = chk.checked ? "block" : "none";
+}
+
+chk.addEventListener("change", toggleEmenda);
+
+// garante o estado correto ao recarregar a página (ex: erro de validação)
+toggleEmenda();

@@ -25,4 +25,21 @@
     <input asp-for="Conta" placeholder="Conta" />
 
     <button type="submit">Gerar Carimbo</button>
+
+    <label>
+        <input asp-for="EhEmenda" type="checkbox" id="chkEmenda" />
+        Emenda
+    </label>
+
+    <div id="camposEmenda" style="display:none; margin-top:10px;">
+
+        <input asp-for="NumeroProposta" placeholder="Nº Proposta" />
+        <input asp-for="NumeroEmenda" placeholder="Nº Emenda" />
+        <input asp-for="NomeParlamentar" placeholder="Nome do Parlamentar" />
+        <input asp-for="Partido" placeholder="Partido" />
+        <input asp-for="TipoEmenda" placeholder="Tipo da Emenda" />
+
+    </div>
+
+
 </form>

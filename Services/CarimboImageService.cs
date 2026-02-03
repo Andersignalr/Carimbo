@@ -36,7 +36,9 @@ public class CarimboImageService
         float y = Padding;
 
         y = Linha(image, y, "FONTE:", dto.Fonte);
-        y = Linha(image, y, "BLOCO:", dto.Bloco);
+
+        if(dto.Bloco!=null)
+            y = Linha(image, y, "BLOCO:", dto.Bloco);
 
         // 🔥 PULO DO GATO
         y = Linha(image, y, ObterTituloNumero(dto.TipoAto), dto.Numero);
@@ -45,6 +47,17 @@ public class CarimboImageService
         y = Linha(image, y, "BANCO:", dto.Banco);
         y = Linha(image, y, "AGÊNCIA:", dto.Agencia);
         y = Linha(image, y, "Nº CONTA:", dto.Conta);
+
+        //Emenda
+        if (dto.EhEmenda)
+        {
+            y = Linha(image, y, "Nº PROPOSTA:", dto.NumeroProposta ?? "");
+            y = Linha(image, y, "Nº EMENDA:", dto.NumeroEmenda ?? "");
+            y = Linha(image, y, "PARLAMENTAR:", dto.NomeParlamentar ?? "");
+            y = Linha(image, y, "PARTIDO:", dto.Partido ?? "");
+            y = Linha(image, y, "TIPO EMENDA:", dto.TipoEmenda ?? "");
+        }
+
 
         // Borda externa
         image.Mutate(ctx =>
