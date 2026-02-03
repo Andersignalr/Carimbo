@@ -9,6 +9,7 @@
     public string Nome { get; set; }
     public string Agencia { get; set; }
     public string Conta { get; set; }
+    public string Bloco { get; set; }
 
     public List<Bloco> Blocos { get; set; } = new();
     public List<Fonte> Fontes { get; set; } = new();

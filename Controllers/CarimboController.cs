@@ -37,9 +37,33 @@ public class CarimboController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Gerar(CarimboCreateViewModel vm)
     {
+        var tipoAto = _context.TiposAto.Find(vm.TipoAtoId);
+        var fonte = _context.Fontes.Find(vm.FonteId);
+
+        if (tipoAto == null || fonte == null)
+            return BadRequest();
+
+        // 🔒 REGRA DE NEGÓCIO
+        if (tipoAto.Nome == "Resolução" && fonte.Nome != "Estadual")
+        {
+            ModelState.AddModelError(
+                "",
+                "Resolução só pode ser da fonte Estadual."
+            );
+        }
+
+        if (tipoAto.Nome == "Portaria" && fonte.Nome != "Federal")
+        {
+            ModelState.AddModelError(
+                "",
+                "Portaria só pode ser da fonte Federal."
+            );
+        }
+
+
         if (!ModelState.IsValid)
         {
-            vm.Blocos = _context.Blocos.ToList();
+            //vm.Blocos = _context.Blocos.ToList();
             vm.Fontes = _context.Fontes.ToList();
             vm.TiposAto = _context.TiposAto.ToList();
             vm.Bancos = _context.Bancos.ToList();
@@ -49,8 +73,8 @@ public class CarimboController : Controller
 
         // 🔎 Busca nomes reais no banco
         var bloco = _context.Blocos.Find(vm.BlocoId);
-        var fonte = _context.Fontes.Find(vm.FonteId);
-        var tipoAto = _context.TiposAto.Find(vm.TipoAtoId);
+        //var fonte = _context.Fontes.Find(vm.FonteId);
+        //var tipoAto = _context.TiposAto.Find(vm.TipoAtoId);
         var banco = _context.Bancos.Find(vm.BancoId);
 
         if (fonte == null || tipoAto == null || banco == null)
@@ -59,7 +83,7 @@ public class CarimboController : Controller
         // 🧱 Modelo FINAL para imagem
         var carimbo = new CarimboModel
         {
-            Bloco = bloco.Nome,
+            Bloco = vm.Bloco,
             Fonte = fonte.Nome,
             TipoAto = tipoAto.Nome,
             Numero = vm.Numero,
@@ -71,7 +95,7 @@ public class CarimboController : Controller
 
         var imagem = _imageService.GerarCarimbo(carimbo);
 
-        //return File(imagem, "image/png", "carimbo.png");
-        return File(imagem, "image/png");
+        return File(imagem, "image/png", "carimbo.png");
+        //return File(imagem, "image/png");
     }
 }

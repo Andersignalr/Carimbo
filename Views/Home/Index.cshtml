@@ -12,9 +12,7 @@
             asp-items="@(new SelectList(Model.Fontes, "Id", "Nome"))">
     </select>
 
-    <select asp-for="BlocoId"
-            asp-items="@(new SelectList(Model.Blocos, "Id", "Nome"))">
-    </select>
+    <input asp-for="Bloco" placeholder="Bloco" />
 
     <input asp-for="Numero" placeholder="Número" />
     <input asp-for="Nome" placeholder="Nome" />
