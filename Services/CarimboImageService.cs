@@ -31,7 +31,7 @@ public class CarimboImageService
     public byte[] GerarCarimbo(CarimboModel dto)
     {
         using var image = new Image<Rgba32>(LarguraImagem, 1200);
-        //image.Mutate(x => x.BackgroundColor(Color.White));
+        image.Mutate(x => x.BackgroundColor(Color.White));
 
         float y = Padding;
 

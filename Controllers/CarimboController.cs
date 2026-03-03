@@ -116,7 +116,7 @@ public class CarimboController : Controller
 
         var imagem = _imageService.GerarCarimbo(carimbo);
 
-        return File(imagem, "image/png", "carimbo.png");
+        return File(imagem, "image/jpg", "carimbo.jpg");
         //return File(imagem, "image/png");
     }
 }
